@@ -1,10 +1,24 @@
 package myFirstPOM;
 
+import java.io.IOException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+
+
+
 public class LoginPage extends Base {
+	
+	//Extent Reports Variables
+	ExtentHtmlReporter htmlReporter;
+	ExtentReports extent;	
 	
 	//LOCATORS
 	
@@ -42,18 +56,36 @@ public class LoginPage extends Base {
 		super(driver);
 	}
 	
-	///// FIRST METHOD LOGIN FAILED /////
 	
-	//Method to Login User
-	public void loginFailed() throws InterruptedException {
+	
+	///// FIRST METHOD LOGIN FAILED /////
+	public void loginFailed() throws InterruptedException, Exception {
+		
+		// start reporters
+	    htmlReporter = new ExtentHtmlReporter("extent.html");
+	    extent = new ExtentReports();
+	    extent.attachReporter(htmlReporter);
+			
+		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extent.html");
+		extent.attachReporter(htmlReporter);
+		
+		ExtentTest test = extent.createTest("Test Case No 1.- Validate if user can't login usin invalid credentials");
+		test.log(Status.INFO, "This test case is to validate login is failing  using invalid credentials");
 		
 		
 		//Verify welcome window is displayed
+		test.log(Status.INFO, "Verify if Welcome Window is displayed");
 		if (isDisplayed(welcomeWindowLocator)) {
 			System.out.println("Welcome message window is present");
+			test.pass("Welcome message window is present", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
+			//test.addScreenCaptureFromPath("screenshot.png");
+			
 		}
 		else {
 			System.out.println("Element is NOT present");
+			test.fail("Welcome Window element is NOT present", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
+			//test.addScreenCaptureFromPath(null);
+		
 			
 						
 		}
@@ -70,6 +102,7 @@ public class LoginPage extends Base {
 		//Verify Cookie Banner is displayed and click
 		if (isDisplayed(coockieBannerLocator)) {
 			System.out.println("Cookie banner is present");
+			
 		}
 		else {
 			System.out.println("Cookie banner is NOT present");
@@ -124,7 +157,7 @@ public class LoginPage extends Base {
 				System.out.println("Login button is not enable");
 			}
 		}	
-			
+		extent.flush();
 	}
 	
 	

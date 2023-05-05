@@ -5,31 +5,61 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
+
+
 
 public class LoginPage_TEST {
 	
 	private WebDriver driver;
 	LoginPage loginPageTest;
 	
+	ExtentHtmlReporter htmlReporter;
+	ExtentReports extent;
+	
+	
 
 	@Before
-	public void setUp() throws Exception {
-		
+	public void setUp() throws Exception 
+	{
 		loginPageTest = new LoginPage(driver);
 		driver = loginPageTest.firefoxDriverConnection();
 		loginPageTest.visit("https://juice-shop.herokuapp.com");
 		driver.manage().window().maximize();
+		
+	   // start reporters
+       //htmlReporter = new ExtentHtmlReporter("extent.html");
+       //extent = new ExtentReports();
+       //extent.attachReporter(htmlReporter);
+		
+	   //ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extent.html");
+	   //extent.attachReporter(htmlReporter);
 	}
 	
 	
 	@Test
-	public void Test1_LoginFailed() throws InterruptedException {
+	public void Test1_LoginFailed() throws InterruptedException, Exception {
+		
+		//Report
+		//ExtentTest test = extent.createTest("Test Case - Login Failed", "Validating login fail as expected when user is using invalid credentials");
+		//test.log(Status.INFO, "This test case is to validate login is failing  using invalid credentials");
+        //test.info("This step shows usage of info(details)");
+        //test.fail("details", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
+        //test.addScreenCaptureFromPath("screenshot.png");
+		
+		
 		
 		//Calling the complete method Login User
 		loginPageTest.loginFailed();	
 		
 		//Validating the warning message text is correct
 		assertEquals("Invalid email or password.", loginPageTest.warningMessage());
+		//test.pass("details", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
 	}
 	
 	
@@ -70,7 +100,10 @@ public class LoginPage_TEST {
 
 	@After
 	public void tearDown() throws Exception {
+		
 		driver.close();
+		//extent.flush();
+		
 	}
 
 	
