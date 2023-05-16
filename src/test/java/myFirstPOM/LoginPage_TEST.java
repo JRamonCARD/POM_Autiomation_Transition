@@ -31,28 +31,12 @@ public class LoginPage_TEST {
 		driver = loginPageTest.firefoxDriverConnection();
 		loginPageTest.visit("https://juice-shop.herokuapp.com");
 		driver.manage().window().maximize();
-		
-	   // start reporters
-       //htmlReporter = new ExtentHtmlReporter("extent.html");
-       //extent = new ExtentReports();
-       //extent.attachReporter(htmlReporter);
-		
-	   //ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extent.html");
-	   //extent.attachReporter(htmlReporter);
+	
 	}
 	
 	
 	@Test
 	public void Test1_LoginFailed() throws InterruptedException, Exception {
-		
-		//Report
-		//ExtentTest test = extent.createTest("Test Case - Login Failed", "Validating login fail as expected when user is using invalid credentials");
-		//test.log(Status.INFO, "This test case is to validate login is failing  using invalid credentials");
-        //test.info("This step shows usage of info(details)");
-        //test.fail("details", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
-        //test.addScreenCaptureFromPath("screenshot.png");
-		
-		
 		
 		//Calling the complete method Login User
 		loginPageTest.loginFailed();	
