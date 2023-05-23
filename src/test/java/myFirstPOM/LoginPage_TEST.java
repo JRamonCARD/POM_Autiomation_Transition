@@ -6,10 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
 
 
 
@@ -19,7 +16,7 @@ public class LoginPage_TEST {
 	private WebDriver driver;
 	LoginPage loginPageTest;
 	
-	ExtentHtmlReporter htmlReporter;
+	//ExtentHtmlReporter htmlReporter;
 	ExtentReports extent;
 	
 	
@@ -43,12 +40,12 @@ public class LoginPage_TEST {
 		
 		//Validating the warning message text is correct
 		assertEquals("Invalid email or password.", loginPageTest.warningMessage());
-		//test.pass("details", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
+		
 	}
 	
 	
 	@Test
-	public void Test2_LoginValid() throws InterruptedException {
+	public void Test2_LoginValid() throws Exception {
 		
 		//Calling method Valid Login from y Class
 		loginPageTest.validLogin();
@@ -86,8 +83,7 @@ public class LoginPage_TEST {
 	public void tearDown() throws Exception {
 		
 		driver.close();
-		//extent.flush();
-		
+				
 	}
 
 	

@@ -1,24 +1,20 @@
 package myFirstPOM;
 
-import java.io.IOException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
+
+
 
 
 
 public class LoginPage extends Base {
-	
-	//Extent Reports Variables
-	ExtentHtmlReporter htmlReporter;
-	ExtentReports extent;	
 	
 	//LOCATORS
 	
@@ -40,7 +36,6 @@ public class LoginPage extends Base {
 	By passwordWarningMessage = By.id("mat-error-1");
 	
 	//LOGOUT LOCATORS
-	
 	By logoutButtonLocator = By.id("navbarLogoutButton");
 	By yourbasketButtonLocator = By.xpath("/html/body/app-root/div/mat-sidenav-container/mat-sidenav-content/app-navbar/mat-toolbar/mat-toolbar-row/button[4]");
 	
@@ -57,38 +52,33 @@ public class LoginPage extends Base {
 	}
 	
 	
-	
 	///// FIRST METHOD LOGIN FAILED /////
 	public void loginFailed() throws InterruptedException, Exception {
 		
-		// start reporters
-	    htmlReporter = new ExtentHtmlReporter("extent.html");
-	    extent = new ExtentReports();
-	    extent.attachReporter(htmlReporter);
-			
-		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extent.html");
-		extent.attachReporter(htmlReporter);
 		
-		ExtentTest test = extent.createTest("Test Case No 1.- Validate if user can't login usin invalid credentials");
-		test.log(Status.INFO, "This test case is to validate login is failing  using invalid credentials");
+		// REPORT EXTENDS
+	   	ExtentReports extent = new ExtentReports();
+		ExtentSparkReporter spark = new ExtentSparkReporter("Myreport.html");
+		spark.config().setTheme(Theme.DARK);
+		spark.config().setDocumentTitle("Automation Report");
+		spark.config().setReportName("Automation report");//Name of the report displayed in the top right side of the page
+		extent.attachReporter(spark);
 		
+		ExtentTest test = extent.createTest("FIRST METHOD LOGIN FAILED"); //Name of the title of the single report
 		
 		//Verify welcome window is displayed
-		test.log(Status.INFO, "Verify if Welcome Window is displayed");
+		//test.log(Status.INFO, "Verify if Welcome Window is displayed");
 		if (isDisplayed(welcomeWindowLocator)) {
 			System.out.println("Welcome message window is present");
 			test.pass("Welcome message window is present", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
-			//test.addScreenCaptureFromPath("screenshot.png");
 			
 		}
 		else {
 			System.out.println("Element is NOT present");
 			test.fail("Welcome Window element is NOT present", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
-			//test.addScreenCaptureFromPath(null);
-		
 			
 						
-		}
+			}
 		
 		//Verify Dismiss  button is displayed and click
 		if (isDisplayed(dismissButtonLocator)) {
@@ -97,24 +87,29 @@ public class LoginPage extends Base {
 		}
 		else {
 			System.out.println("Button is NOT present");
+			
 		}
 		
 		//Verify Cookie Banner is displayed and click
 		if (isDisplayed(coockieBannerLocator)) {
 			System.out.println("Cookie banner is present");
 			
+			
 		}
 		else {
 			System.out.println("Cookie banner is NOT present");
+			
 		}
 		
 		//Verify Me Want it button is displayed and click
 		if (isDisplayed(weWantItButtonLocator)) {
 			System.out.println("Accept button is present");
+			
 			click(weWantItButtonLocator);
 		}
 		else {
 			System.out.println("Accept button NOT present");
+			
 		}
 			
 		//Find Account button and click
@@ -123,40 +118,49 @@ public class LoginPage extends Base {
 		
 		//Validate if Login button is displayed
 		if (isDisplayed(loginButtonLocator)) {
+			
 			click(loginButtonLocator);
 		}
 		else {
 			System.out.println("Login button not displayed");
+			
 		}
 		
 		//Verify Login box container is displayed enter credentials and validate warning message
 		if (isDisplayed(loginContainerLocator)) {
 			System.out.println("Login container was displayed");
 			
+			
 			//Validate Email text box is displayed send email
 			if(isDisplayed(emailTextFieldLocator)) {
+				
 				type("wrong@email.com", emailTextFieldLocator);
 			}
 			else {
 				System.out.println("Email field not present");
+				
 			}
 			
 			//Validate Password field is present
 			if (isDisplayed(passwordTextFieldLocator)) {
+				
 				type("password", passwordTextFieldLocator);
 			}
 			else {
 				System.out.println("Password field not present");
+				
 			}
 			
 			//Validate Login button is enable and click
 			if (isEnable(loginMasterLocator)) {
+				
 				click(loginMasterLocator);
 			}
 			else {
 				System.out.println("Login button is not enable");
+				
 			}
-		}	
+		}
 		extent.flush();
 	}
 	
@@ -174,12 +178,14 @@ public class LoginPage extends Base {
 	///// SECOND METHOD LOGIN VALID /////
 	
 	//Method Login user
-		public void validLogin() throws InterruptedException{
+		public void validLogin() throws InterruptedException, Exception{
+				
 			
 			//Verify welcome window is displayed
 			if (isDisplayed(welcomeWindowLocator)) 
 			{
 				System.out.println("Welcome message window is present");
+				
 			}
 			else 
 			{
