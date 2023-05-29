@@ -1,11 +1,18 @@
 package myFirstPOM;
 
 import static org.junit.Assert.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 
 
 
@@ -17,7 +24,8 @@ public class LoginPage_TEST {
 	LoginPage loginPageTest;
 	
 	//ExtentHtmlReporter htmlReporter;
-	ExtentReports extent;
+ 	ExtentReports extent;
+	ExtentTest test;
 	
 	
 
@@ -28,6 +36,19 @@ public class LoginPage_TEST {
 		driver = loginPageTest.firefoxDriverConnection();
 		loginPageTest.visit("https://juice-shop.herokuapp.com");
 		driver.manage().window().maximize();
+		
+		//EXTEND REPORT
+		extent = new ExtentReports();
+		ExtentSparkReporter spark = new ExtentSparkReporter("MyReport.html");
+	
+		spark.config().enableOfflineMode(true);
+		spark.config().setDocumentTitle("Automation Report");
+		spark.config().setReportName("Extent Report Demo");
+		spark.config().setTheme(Theme.STANDARD);
+		spark.config().setTimeStampFormat("dd/MM/yyyy HH:mm:ss");
+		extent.attachReporter(spark);
+		test = extent.createTest("FIRST METHOD LOGIN FAILED"); //Name of the title of the single report
+		
 	
 	}
 	
@@ -35,12 +56,14 @@ public class LoginPage_TEST {
 	@Test
 	public void Test1_LoginFailed() throws InterruptedException, Exception {
 		
+		
 		//Calling the complete method Login User
 		loginPageTest.loginFailed();	
 		
 		//Validating the warning message text is correct
+		test.pass("Welcome message window is present");
 		assertEquals("Invalid email or password.", loginPageTest.warningMessage());
-		
+	
 	}
 	
 	
@@ -81,7 +104,7 @@ public class LoginPage_TEST {
 
 	@After
 	public void tearDown() throws Exception {
-		
+		extent.flush();
 		driver.close();
 				
 	}

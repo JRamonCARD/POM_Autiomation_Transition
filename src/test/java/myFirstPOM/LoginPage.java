@@ -4,15 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
-
-
-
-
 
 public class LoginPage extends Base {
 	
@@ -56,28 +47,15 @@ public class LoginPage extends Base {
 	public void loginFailed() throws InterruptedException, Exception {
 		
 		
-		// REPORT EXTENDS
-	   	ExtentReports extent = new ExtentReports();
-		ExtentSparkReporter spark = new ExtentSparkReporter("Myreport.html");
-		spark.config().setTheme(Theme.DARK);
-		spark.config().setDocumentTitle("Automation Report");
-		spark.config().setReportName("Automation report");//Name of the report displayed in the top right side of the page
-		extent.attachReporter(spark);
-		
-		ExtentTest test = extent.createTest("FIRST METHOD LOGIN FAILED"); //Name of the title of the single report
-		
 		//Verify welcome window is displayed
-		//test.log(Status.INFO, "Verify if Welcome Window is displayed");
-		if (isDisplayed(welcomeWindowLocator)) {
+		if (isDisplayed(welcomeWindowLocator)) 
+		{
 			System.out.println("Welcome message window is present");
-			test.pass("Welcome message window is present", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
-			
+						
 		}
 		else {
 			System.out.println("Element is NOT present");
-			test.fail("Welcome Window element is NOT present", MediaEntityBuilder.createScreenCaptureFromPath("screenshot.png").build());
-			
-						
+									
 			}
 		
 		//Verify Dismiss  button is displayed and click
@@ -161,7 +139,7 @@ public class LoginPage extends Base {
 				
 			}
 		}
-		extent.flush();
+		//extent.flush();
 	}
 	
 	
