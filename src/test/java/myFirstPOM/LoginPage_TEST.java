@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
@@ -21,33 +22,36 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 public class LoginPage_TEST {
 	
 	private WebDriver driver;
-	LoginPage loginPageTest;
+	LoginPage loginPageTest; //Creating instance of the class LoginPage where I do all the validation
 	
-	//ExtentHtmlReporter htmlReporter;
- 	ExtentReports extent;
+	ExtentReports extent;
 	ExtentTest test;
+	String timeStamp = new SimpleDateFormat("MMddyyyy_HHmmss").format(Calendar.getInstance().getTime());//To get time and date
 	
 	
-
 	@Before
 	public void setUp() throws Exception 
 	{
+		
+		
+		//EXTENT REPORTS
+		extent = new ExtentReports();
+		
+		ExtentSparkReporter spark = new ExtentSparkReporter("My Report.html" + timeStamp); //creating new object "spark" to create my report with name "My Report"
+		
+		spark.config().enableOfflineMode(true);
+		spark.config().setDocumentTitle("Automation Report");//Name of the tab of the browser
+		spark.config().setReportName("Extent Report Demo");//Label displayed in the right side of the report like a button
+		spark.config().setTheme(Theme.STANDARD);
+		
+		extent.attachReporter(spark);
+		test = extent.createTest("Longin Page Reports"); //Name of the title of the single report
+		
+		//Code to call Login Page class, driver browser and page
 		loginPageTest = new LoginPage(driver);
 		driver = loginPageTest.firefoxDriverConnection();
 		loginPageTest.visit("https://juice-shop.herokuapp.com");
 		driver.manage().window().maximize();
-		
-		//EXTEND REPORT
-		extent = new ExtentReports();
-		ExtentSparkReporter spark = new ExtentSparkReporter("MyReport.html");
-	
-		spark.config().enableOfflineMode(true);
-		spark.config().setDocumentTitle("Automation Report");
-		spark.config().setReportName("Extent Report Demo");
-		spark.config().setTheme(Theme.STANDARD);
-		spark.config().setTimeStampFormat("dd/MM/yyyy HH:mm:ss");
-		extent.attachReporter(spark);
-		test = extent.createTest("FIRST METHOD LOGIN FAILED"); //Name of the title of the single report
 		
 	
 	}
@@ -61,8 +65,10 @@ public class LoginPage_TEST {
 		loginPageTest.loginFailed();	
 		
 		//Validating the warning message text is correct
-		test.pass("Welcome message window is present");
+		test.info("This TEST is to validate the user can not login using incorrect Email or Password");
 		assertEquals("Invalid email or password.", loginPageTest.warningMessage());
+		test.pass("User was unable to login using incorrect Email and Password");
+		extent.flush();//This will close  the process and create the report
 	
 	}
 	
@@ -73,9 +79,13 @@ public class LoginPage_TEST {
 		//Calling method Valid Login from y Class
 		loginPageTest.validLogin();
 		
+		//Information
+		test.info("This TEST is to validate the user can login using valid Email or Password");
+		
 		//Validating if the email displayed is my email
 		assertEquals("li.ramoncr@gmail.com", loginPageTest.loginSuccessfully());
-		
+		test.pass("User was able to login using valid Email and Password");
+		extent.flush();//This will close  the process and create the report
 	}
 	
 	@Test
@@ -104,7 +114,7 @@ public class LoginPage_TEST {
 
 	@After
 	public void tearDown() throws Exception {
-		extent.flush();
+		
 		driver.close();
 				
 	}
